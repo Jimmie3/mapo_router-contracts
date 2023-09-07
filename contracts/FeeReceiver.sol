@@ -26,7 +26,7 @@ contract FeeReceiver is Ownable2Step {
         address token;
         address callTo;
         address approveTo;
-        bytes playload;
+        bytes payload;
     }
     constructor(address[] memory payees, uint256[] memory shares_,address _owner){
         require(payees.length == shares_.length, "payees and shares length mismatch");
@@ -49,10 +49,10 @@ contract FeeReceiver is Ownable2Step {
             uint256 balance = Helper._getBalance(converts[i].token,address(this));
             bool result;
             if(Helper._isNative(converts[i].token)){
-               (result,) = converts[i].callTo.call{value:balance}(converts[i].playload);
+               (result,) = converts[i].callTo.call{value:balance}(converts[i].payload);
             } else {
                 SafeERC20.safeIncreaseAllowance(IERC20(converts[i].token),converts[i].approveTo,balance);
-                (result,) = converts[i].callTo.call(converts[i].playload);
+                (result,) = converts[i].callTo.call(converts[i].payload);
             }
             require(result,"convert fail");
             emit ConvertTo(converts[i].token,balance);
