@@ -1159,7 +1159,163 @@ let config = new Map(
                 ]
             }
         }],
+
+        ["Conflux",{
+            wToken:"0x14b2d3bc65e74dae1030eafd8ac30c533c976a9b",
+            v2: {
+                mos: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
+                fee: {
+                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    feeRate: "7000",//denominator is 1000000
+                    fixedFee: "1000000000000000000000"
+                },
+                executors: [
+                    "0x002162B2aEe2dD657FB131b28CC34deE6797b66f",//swap adapter
+                ]
+            },
+            plus: {
+                mos: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
+                fee: {
+                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    feeRate: "7000",//denominator is 1000000
+                    fixedFee: "1000000000000000000000"
+                },
+                executors: [
+                    "0xbB21e441fb738F54e6eC244e435475096E179d66",//butter router
+                ]
+            }
+        }],
+
+        ["Tron",{
+            wToken:"TNUC9Qb1rRpS5CbWLmNMxXBjyFoydXjWFR",
+            v2: {
+                mos: "TYMpgB8Q9vSoGtkyE3hXsvUrpte3KCDGj6",
+                fee: {
+                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    feeRate: "7000",//denominator is 1000000
+                    fixedFee: "1000000000000000000000"
+                },
+                executors: [
+                    "TFjMCoPkckebV9NQKNBLTrghprzehCY2sL",//swap adapter
+                ]
+            },
+            plus: {
+                mos: "TYMpgB8Q9vSoGtkyE3hXsvUrpte3KCDGj6",
+                fee: {
+                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    feeRate: "7000",//denominator is 1000000
+                    fixedFee: "1000000000000000000000"
+                },
+                executors: [
+                    "TKgJ9BPQrwsifuoEZ1aUWV1xHoBRUDvzqN",//butter router
+                ]
+            }
+        }],
+
         
+        ["BEVM",{
+            wToken:"0x09Ff8E49D0EA411A3422ed95E8f5497D4241F532",
+            v2: {
+                mos: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
+                fee: {
+                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    feeRate: "7000",//denominator is 1000000
+                    fixedFee: "1000000000000000000000"
+                },
+                executors: [
+                    "0x002162B2aEe2dD657FB131b28CC34deE6797b66f",//swap adapter
+                ]
+            },
+            plus: {
+                mos: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
+                fee: {
+                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    feeRate: "7000",//denominator is 1000000
+                    fixedFee: "1000000000000000000000"
+                },
+                executors: [
+                    "0xbB21e441fb738F54e6eC244e435475096E179d66",//butter router
+                ]
+            }
+        }],
+
+        ["Merlin",{
+            wToken:"0xF6D226f9Dc15d9bB51182815b320D3fBE324e1bA",
+            v2: {
+                mos: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
+                fee: {
+                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    feeRate: "7000",//denominator is 1000000
+                    fixedFee: "1000000000000000000000"
+                },
+                executors: [
+                    "0x002162B2aEe2dD657FB131b28CC34deE6797b66f",//swap adapter
+                ]
+            },
+            plus: {
+                mos: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
+                fee: {
+                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    feeRate: "7000",//denominator is 1000000
+                    fixedFee: "1000000000000000000000"
+                },
+                executors: [
+                    "0xbB21e441fb738F54e6eC244e435475096E179d66",//butter router
+                ]
+            }
+        }],
+        
+        ["Blast",{
+            wToken:"0x4300000000000000000000000000000000000004",
+            v2: {
+                mos: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
+                fee: {
+                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    feeRate: "7000",//denominator is 1000000
+                    fixedFee: "1000000000000000000000"
+                },
+                executors: [
+                    "0x002162B2aEe2dD657FB131b28CC34deE6797b66f",//swap adapter
+                ]
+            },
+            plus: {
+                mos: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
+                fee: {
+                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    feeRate: "7000",//denominator is 1000000
+                    fixedFee: "1000000000000000000000"
+                },
+                executors: [
+                    "0xbB21e441fb738F54e6eC244e435475096E179d66",//butter router
+                ]
+            }
+        }],
+
+        ["Ainn",{
+            wToken:"0x1470a4831F76954686BfB4dE8180F7469EA8dE6F",
+            v2: {
+                mos: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
+                fee: {
+                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    feeRate: "7000",//denominator is 1000000
+                    fixedFee: "1000000000000000000000"
+                },
+                executors: [
+                    "0x002162B2aEe2dD657FB131b28CC34deE6797b66f",//swap adapter
+                ]
+            },
+            plus: {
+                mos: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
+                fee: {
+                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    feeRate: "7000",//denominator is 1000000
+                    fixedFee: "1000000000000000000000"
+                },
+                executors: [
+                    "0xbB21e441fb738F54e6eC244e435475096E179d66",//butter router
+                ]
+            }
+        }],
 
 
         //<------------------------------------- test ----------------------------------------->

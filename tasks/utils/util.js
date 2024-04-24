@@ -3,7 +3,7 @@
 
 exports.setMos = async function (router_addr,mos) {
 
-    let Router = await ethers.getContractFactory("ButterRouter");
+    let Router = await ethers.getContractFactory("ButterRouterPlus");
 
     let router = Router.attach(router_addr);
 
@@ -28,7 +28,7 @@ exports.setAuthorization = async function (router_addr, executors_s, flag) {
         return;
     }
 
-    let Router = await ethers.getContractFactory("ButterRouterV2");
+    let Router = await ethers.getContractFactory("ButterRouterPlus");
 
     let router = Router.attach(router_addr);
 
