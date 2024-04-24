@@ -246,6 +246,48 @@ module.exports = {
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
 
+    Conflux: {
+      url: `https://conflux-espace.blockpi.network/v1/rpc/public`,
+      chainId : 1030,
+      zksync: false,
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+
+    BEVM: {
+      url: `https://rpc-canary-1.bevm.io`,
+      chainId : 1501,
+      zksync: false,
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+
+    Merlin: {
+      url: `https://merlin.blockpi.network/v1/rpc/public`,
+      chainId : 4200,
+      gasPrice: 50000000,
+      zksync: false,
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+
+    Blast: {
+      url: `https://rpc.blast.io`,
+      chainId : 81457,
+      zksync: false,
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+
+    Ainn: {
+      url: `https://mainnet-rpc.anvm.io`,
+      chainId : 2649,
+      gasPrice: 50000000,
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+
+    Tron: {
+      url: `https://mainnet-rpc.anvm.io`,
+      chainId : 728126428,
+      gasPrice: 50000000,
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
 
     MaticTest: {
       url: `https://polygon-mumbai.blockpi.network/v1/rpc/public`,

@@ -2,7 +2,7 @@ let {create,createZk,readFromFile,writeToFile} = require("../../utils/create.js"
 let {task } = require("hardhat/config");
 let {getConfig} = require("../../configs/config")
 let {setAuthorization,setFee} = require("../utils/util.js");
-
+let {deploy_contract,getTronWeb,setTronAuthorization} = require("../utils/tronUtil.js");
 module.exports = async (taskArgs,hre) => {
         const {getNamedAccounts, network } = hre;
         const { deployer } = await getNamedAccounts();
@@ -44,31 +44,36 @@ module.exports = async (taskArgs,hre) => {
 task("routerPlus:deploy", "deploy butter router plus")
     .addParam("wtoken", "wtoken address")
     .setAction(async (taskArgs,hre) => {
-        const {getNamedAccounts, ethers } = hre;
-        const { deployer } = await getNamedAccounts();
-
-        console.log("\ndeploy butter router plus deployer :", deployer);
-        let chainId = await hre.network.config.chainId;
+        const {getNamedAccounts, ethers,network} = hre;
+        
         let plus;
-        if(chainId === 324 || chainId === 280){
-            plus = await createZk("ButterRouterPlus",[deployer, taskArgs.wtoken],hre);
+        if(network.name === "Tron" || network.name === "TronTest"){
+            let tronWeb = await getTronWeb(network.name);
+            let deployer = "0x" + tronWeb.defaultAddress.hex.substring(2);
+            console.log("deployer :", tronWeb.address.fromHex(deployer));
+            plus = await deploy_contract(hre.artifacts,"ButterRouterPlus",[deployer,taskArgs.wToken]);
         } else {
-            let salt = process.env.PLUS_DEPLOY_SALT;
-            let ButterRouterPlus = await ethers.getContractFactory("ButterRouterPlus");
-            let param = ethers.utils.defaultAbiCoder.encode(['address', 'address'], [deployer, taskArgs.wtoken])
-            let result = await create(salt,ButterRouterPlus.bytecode, param)
-            plus = result[0];
+            const { deployer } = await getNamedAccounts();
+            console.log("\ndeploy butter router plus deployer :", deployer);
+            let chainId = await hre.network.config.chainId;
+            if(chainId === 324 || chainId === 280){
+                plus = await createZk("ButterRouterPlus",[deployer, taskArgs.wtoken],hre);
+            } else {
+                let salt = process.env.PLUS_DEPLOY_SALT;
+                let ButterRouterPlus = await ethers.getContractFactory("ButterRouterPlus");
+                let param = ethers.utils.defaultAbiCoder.encode(['address', 'address'], [deployer, taskArgs.wtoken])
+                let result = await create(salt,ButterRouterPlus.bytecode, param)
+                plus = result[0];
+            }
+            console.log("router plus address :",plus);
         }
-        console.log("router plus address :",plus);
         let deploy = await readFromFile(network.name);
-
         if(!deploy[network.name]["ButterRouterPlus"]){
             deploy[network.name]["ButterRouterPlus"] = {}
         }
-       
         deploy[network.name]["ButterRouterPlus"]["addr"] = plus;
-    
         await writeToFile(deploy);
+
 });
 
 task("routerPlus:deployTransferProxy", "deploy transfer proxy")
@@ -102,13 +107,18 @@ task("routerPlus:setAuthorization", "set Authorization")
     .addParam("executors", "executors address array")
     .addOptionalParam("flag", "flag, default: true", true, types.boolean)
     .setAction(async (taskArgs,hre) => {
-        const { deployments, getNamedAccounts, ethers } = hre;
-        const { deploy } = deployments;
-        const { deployer } = await getNamedAccounts();
+        const { deployments, getNamedAccounts, network } = hre;
+        if(network.name === "Tron" || network.name === "TronTest"){
+            let tronWeb = await getTronWeb(network.name);
+            let deployer = "0x" + tronWeb.defaultAddress.hex.substring(2);
+            await setTronAuthorization(taskArgs.router,taskArgs.executors, taskArgs.flag);
+        } else {
+            const { deployer } = await getNamedAccounts();
 
-        console.log("\nset authorization deployer :", deployer);
-
-        await setAuthorization(taskArgs.router, taskArgs.executors, taskArgs.flag);
+            console.log("\nset authorization deployer :", deployer);
+    
+            await setAuthorization(taskArgs.router, taskArgs.executors, taskArgs.flag);
+        }
 });
 
 
