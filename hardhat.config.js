@@ -1,6 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv/config")
 require('hardhat-deploy');
+require('@nomiclabs/hardhat-ethers');
 require('@matterlabs/hardhat-zksync-deploy') 
 require('@matterlabs/hardhat-zksync-solc')
 require('@matterlabs/hardhat-zksync-verify')
@@ -47,7 +48,7 @@ module.exports = {
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     Matic: {
-      url: `https://polygon.llamarpc.com`,
+      url: `https://rpc.ankr.com/polygon`,
       chainId : 137,
       zksync: false,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
@@ -65,7 +66,7 @@ module.exports = {
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     Klaytn: {
-      url: `https://public-node-api.klaytnapi.com/v1/cypress`,
+      url: `https://public-en-cypress.klaytn.net`,
       chainId : 8217,
       zksync: false,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
@@ -272,6 +273,17 @@ module.exports = {
       url: `https://rpc.blast.io`,
       chainId : 81457,
       zksync: false,
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+
+    Scroll: {
+      url: `https://rpc.scroll.io`,
+      chainId : 534352,
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+    Mantle: {
+      url: `https://rpc.mantle.xyz`,
+      chainId : 5000,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
 

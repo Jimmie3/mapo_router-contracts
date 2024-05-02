@@ -20,7 +20,5 @@ interface ISymbiosisMetaRouter {
      * @dev calls the next method on the other side
      * @param _metarouteTransaction metaRoute offchain transaction data
      */
-    function metaRoute(
-        MetaRouteTransaction calldata _metarouteTransaction
-    ) external payable;
+    function metaRoute(MetaRouteTransaction calldata _metarouteTransaction) external payable;
 }

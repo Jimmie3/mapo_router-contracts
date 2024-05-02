@@ -1,7 +1,5 @@
 const TronWeb = require("tronweb");
-const { getTronWeb } = require("../../../router-contracts/utils/tronUtil");
 require("dotenv").config();
-
 
 exports.setTronAuthorization = async function (tronWeb, artifacts, router_addr, executors, flag) {
     let Router = await artifacts.readArtifact("ButterRouterPlus");
@@ -22,7 +20,7 @@ exports.setTronAuthorization = async function (tronWeb, artifacts, router_addr, 
     console.log(`Router ${router_addr} setAuthorization ${executorList} succeed`);
 };
 
-exports.deploy_contract = async function deploy_contract(artifacts, name, args, network,tronWeb) {
+exports.deploy_contract = async function deploy_contract(artifacts, name, args, network, tronWeb) {
     let c = await artifacts.readArtifact(name);
     let contract_instance = await tronWeb.contract().new({
         abi: c.abi,

@@ -2,10 +2,7 @@
 
 pragma solidity ^0.8.9;
 
-
-
 library ErrorMessage {
-
     string internal constant ZERO_IN = "ButterRouterV2: zero in";
 
     string internal constant FEE_MISMATCH = "ButterRouterV2: fee mismatch";
@@ -35,5 +32,4 @@ library ErrorMessage {
     string internal constant NO_APPROVE = "ButterRouterV2:not approved";
 
     string internal constant NATIVE_VAULE_OVERSPEND = "ButterRouterV2: native value overspend";
-
 }
