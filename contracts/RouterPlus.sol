@@ -64,7 +64,7 @@ contract ButterRouterPlus is Router, ReentrancyGuard {
         }
 
         if (swapTemp.swapAmount > swapTemp.callAmount) {
-            Helper._transfer(swapTemp.swapToken, swapTemp.receiver, (swapTemp.swapAmount - swapTemp.callAmount));
+            Helper._transfer(selfChainId, swapTemp.swapToken, swapTemp.receiver, (swapTemp.swapAmount - swapTemp.callAmount));
         }
 
         emit SwapAndCall(

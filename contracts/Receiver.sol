@@ -28,6 +28,8 @@ contract Receiver is ReentrancyGuard, Ownable2Step {
     uint256 internal nativeBalanceBeforeExec;
     bool internal callWithExtraNativeAmount;
 
+    uint256 public immutable selfChainId = block.chainid;
+
     event StargateRouterSet(address indexed _router);
     event CBridgeMessageBusSet(address indexed _router);
     event AmarokRouterSet(address indexed _router);
@@ -204,7 +206,7 @@ contract Receiver is ReentrancyGuard, Ownable2Step {
         require(msg.sender != cBridgeMessageBus, ErrorMessage.NO_APPROVE);
         (address receiver, , , ) = abi.decode(_message, (address, bytes32, bytes, bytes));
         // return funds to cBridgeData.refundAddress
-        Helper._transfer(_token, receiver, _amount);
+        Helper._transfer(selfChainId, _token, receiver, _amount);
         return IMessageReceiverApp.ExecutionStatus.Success;
     }
 
@@ -240,7 +242,7 @@ contract Receiver is ReentrancyGuard, Ownable2Step {
 
         uint256 balance = Helper._getBalance(_srcToken, address(this));
         if (balance < _amount) {
-            Helper._transfer(_srcToken, _receiver, balance);
+            Helper._transfer(selfChainId, _srcToken, _receiver, balance);
             emit SwapAndCall(
                 msg.sender,
                 temp.receiver,
@@ -256,7 +258,7 @@ contract Receiver is ReentrancyGuard, Ownable2Step {
         }
 
         if (reserveRecoverGas && gasleft() < recoverGas) {
-            Helper._transfer(_srcToken, _receiver, _amount);
+            Helper._transfer(selfChainId, _srcToken, _receiver, _amount);
             emit SwapAndCall(
                 msg.sender,
                 temp.receiver,
@@ -276,7 +278,7 @@ contract Receiver is ReentrancyGuard, Ownable2Step {
             Helper.SwapParam memory swap = abi.decode(_swapData, (Helper.SwapParam));
             (result, temp.swapToken, temp.swapAmount) = _makeSwap(temp.srcAmount, _srcToken, swap);
             if (!result) {
-                Helper._transfer(_srcToken, temp.receiver, _amount);
+                Helper._transfer(selfChainId, _srcToken, temp.receiver, _amount);
                 emit SwapAndCall(
                     msg.sender,
                     temp.receiver,
@@ -306,12 +308,12 @@ contract Receiver is ReentrancyGuard, Ownable2Step {
             }
         }
         if (temp.swapAmount > temp.callAmount) {
-            Helper._transfer(temp.swapToken, temp.receiver, (temp.swapAmount - temp.callAmount));
+            Helper._transfer(selfChainId, temp.swapToken, temp.receiver, (temp.swapAmount - temp.callAmount));
         }
 
         balance = Helper._getBalance(_srcToken, address(this));
         if (balance > srcTokenBalanceBefore) {
-            Helper._transfer(_srcToken, _receiver, (balance - srcTokenBalanceBefore));
+            Helper._transfer(selfChainId, _srcToken, _receiver, (balance - srcTokenBalanceBefore));
         }
         emit SwapAndCall(
             msg.sender,
@@ -354,7 +356,7 @@ contract Receiver is ReentrancyGuard, Ownable2Step {
     }
 
     function rescueFunds(address _token, uint256 _amount) external onlyOwner {
-        Helper._transfer(_token, msg.sender, _amount);
+        Helper._transfer(selfChainId, _token, msg.sender, _amount);
     }
 
     receive() external payable {}

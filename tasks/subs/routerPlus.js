@@ -2,7 +2,7 @@ let { create, createZk, readFromFile, writeToFile } = require("../../utils/creat
 let { task } = require("hardhat/config");
 let { getConfig } = require("../../configs/config");
 let { setAuthorization, setFee } = require("../utils/util.js");
-let { deploy_contract, getTronWeb, setTronAuthorization } = require("../utils/tronUtil.js");
+let { deploy_contract, getTronWeb, setTronAuthorization, tronSetFee } = require("../utils/tronUtil.js");
 module.exports = async (taskArgs, hre) => {
     const { getNamedAccounts, network } = hre;
     const { deployer } = await getNamedAccounts();
@@ -50,8 +50,9 @@ task("routerPlus:deploy", "deploy butter router plus")
         if (network.name === "Tron" || network.name === "TronTest") {
             let tronWeb = await getTronWeb(network.name);
             let deployer = "0x" + tronWeb.defaultAddress.hex.substring(2);
+            let wtoken = tronWeb.address.toHex(taskArgs.wtoken).replace(/^(41)/, "0x");
             console.log("deployer :", tronWeb.address.fromHex(deployer));
-            plus = await deploy_contract(hre.artifacts, "ButterRouterPlus", [deployer, taskArgs.wToken]);
+            plus = await deploy_contract(hre.artifacts, "ButterRouterPlus", [deployer, wtoken], tronWeb);
         } else {
             const { deployer } = await getNamedAccounts();
             console.log("\ndeploy butter router plus deployer :", deployer);
@@ -108,7 +109,7 @@ task("routerPlus:setAuthorization", "set Authorization")
         if (network.name === "Tron" || network.name === "TronTest") {
             let tronWeb = await getTronWeb(network.name);
             let deployer = "0x" + tronWeb.defaultAddress.hex.substring(2);
-            await setTronAuthorization(taskArgs.router, taskArgs.executors, taskArgs.flag);
+            await setTronAuthorization(tronWeb, hre.artifacts, taskArgs.router, taskArgs.executors, taskArgs.flag);
         } else {
             const { deployer } = await getNamedAccounts();
 
@@ -130,7 +131,20 @@ task("routerPlus:setFee", "set fee ")
 
         console.log("set fee deployer :", deployer);
 
-        await setFee(taskArgs.router, taskArgs.feereceiver, taskArgs.feerate, taskArgs.fixedfee);
+        if (network.name === "Tron" || network.name === "TronTest") {
+            let tronWeb = await getTronWeb(network.name);
+            await tronSetFee(
+                tronWeb,
+                hre.artifacts,
+                taskArgs.router,
+                taskArgs.feereceiver,
+                taskArgs.feerate,
+                taskArgs.fixedfee
+            );
+        } else {
+
+            await setFee(taskArgs.router, taskArgs.feereceiver, taskArgs.feerate, taskArgs.fixedfee);
+        }
     });
 
 task("routerPlus:setAuthFromConfig", "set Authorization from config file")
@@ -145,16 +159,21 @@ task("routerPlus:setAuthFromConfig", "set Authorization from config file")
             throw "config not set";
         }
 
-        let deploy_json = await readFromFile(network.name);
+        if (network.name === "Tron" || network.name === "TronTest") {
+            let tronWeb = await getTronWeb(network.name);
+            await tronSetAuthFromConfig(tronWeb, hre.artifacts, network.name, taskArgs.router, config);
+        } else {
 
-        let router_addr = taskArgs.router;
-        if (router_addr === "router") {
-            if (deploy_json[network.name]["RouterPlus"] === undefined) {
-                throw "can not get router address";
+            let deploy_json = await readFromFile(network.name);
+
+            let router_addr = taskArgs.router;
+            if (router_addr === "router") {
+                if (deploy_json[network.name]["RouterPlus"] === undefined) {
+                    throw "can not get router address";
+                }
+                router_addr = deploy_json[network.name]["RouterPlus"]["addr"];
             }
-            router_addr = deploy_json[network.name]["RouterPlus"]["addr"];
-        }
-        console.log("router: ", router_addr);
+            console.log("router: ", router_addr);
 
         let proxy_addr = deploy_json[network.name]["TransferProxy"];
         if (proxy_addr != undefined) {
@@ -162,10 +181,10 @@ task("routerPlus:setAuthFromConfig", "set Authorization from config file")
             config.executors.push(proxy_addr);
         }
 
-        let Router = await ethers.getContractFactory("ButterRouterPlus");
-        let router = Router.attach(router_addr);
+            let Router = await ethers.getContractFactory("ButterRouterPlus");
+            let router = Router.attach(router_addr);
 
-        console.log(router.address);
+            console.log(router.address);
 
         let executors = [];
         for (let i = 0; i < config.executors.length; i++) {
@@ -175,12 +194,42 @@ task("routerPlus:setAuthFromConfig", "set Authorization from config file")
             }
         }
 
-        if (executors.length > 0) {
-            let executors_s = executors.join(",");
-            console.log("routers to set :", executors_s);
+            if (executors.length > 0) {
+                let executors_s = executors.join(",");
+                console.log("routers to set :", executors_s);
 
-            await setAuthorization(router_addr, executors_s, true);
+                await setAuthorization(router_addr, executors_s, true);
+            }
         }
 
         console.log("RouterPlus sync authorization from config file.");
+    });
+
+task("routerPlus:getFee", "set Authorization")
+    .addParam("router", "router address")
+    .addParam("token", "executors address array")
+    .addParam("amount", "executors address array")
+    .addParam("type", "executors address array")
+    .setAction(async (taskArgs, hre) => {
+        const { deployments, getNamedAccounts, network } = hre;
+        let rst;
+
+        if (network.name === "Tron" || network.name === "TronTest") {
+            let tronWeb = await getTronWeb(network.name);
+            let deployer = "0x" + tronWeb.defaultAddress.hex.substring(2);
+            let Router = await hre.artifacts.readArtifact("ButterRouterPlus");
+            let router = await tronWeb.contract(Router.abi, taskArgs.router);
+            rst = await router.getFee(taskArgs.amount, taskArgs.token, taskArgs.type).call();
+        } else {
+            const { deployer } = await getNamedAccounts();
+
+            console.log("\nset authorization deployer :", deployer);
+
+            let Router = await ethers.getContractFactory("ButterRouterPlus");
+
+            let router = Router.attach(router_addr);
+
+            rst =  await router.getFee(taskArgs.amount, taskArgs.token, taskArgs.type);
+        }
+        console.log(rst);
     });

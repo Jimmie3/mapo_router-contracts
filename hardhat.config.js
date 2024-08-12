@@ -36,7 +36,7 @@ module.exports = {
       initialBaseFeePerGas: 0,
     },
     Eth: {
-      url: `https://mainnet.infura.io/v3/` + process.env.INFURA_KEY,
+      url: `https://rpc.ankr.com/eth`,
       chainId : 1,
       zksync: false,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
@@ -60,7 +60,7 @@ module.exports = {
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     Bsc: {
-      url: `https://rpc.ankr.com/bsc`,
+      url: `https://bsc.drpc.org`,
       chainId : 56,
       zksync: false,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
@@ -72,7 +72,7 @@ module.exports = {
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     Arbitrum: {
-      url: `https://1rpc.io/arb`,
+      url: `https://arb1.arbitrum.io/rpc`,
       chainId : 42161,
       zksync: false,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
@@ -82,6 +82,13 @@ module.exports = {
       chainId : 324,
       zksync: true,
       ethNetwork: 'Eth',
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+    zkLink: {
+      url: `https://rpc.zklink.network`,
+      chainId : 810180,
+      zksync: true,
+      ethNetwork: "Eth",
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     Optimism: {
@@ -295,9 +302,8 @@ module.exports = {
     },
 
     Tron: {
-      url: `https://mainnet-rpc.anvm.io`,
-      chainId : 728126428,
-      gasPrice: 50000000,
+      url: `https://api.trongrid.io/jsonrpc`,
+      chainId: 728126428,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
 
