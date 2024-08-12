@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
-import "@butternetwork/bridge/contracts/interface/IButterMosV2.sol";
 import "./interface/IButterRouterV2.sol";
 import "./lib/ErrorMessage.sol";
 import "./abstract/Router.sol";
