@@ -12,7 +12,7 @@ abstract contract SwapCall {
     address internal constant ZERO_ADDRESS = address(0);
     address internal constant NATIVE_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
-    address public wToken;
+    address private wToken;
     mapping(address => bool) public approved;
     mapping(bytes4 => bool) public funcBlackList;
     event EditFuncBlackList(bytes4 _func, bool flag);

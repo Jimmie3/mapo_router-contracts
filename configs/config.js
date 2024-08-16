@@ -22,6 +22,7 @@ let config = new Map([
             executors: [
                 "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", // butter router v3.0
                 "0xaa301070448385cfAaC5913A67B16C4392944a8f", // swapAdapter
+                "0x3321dE36B6C29A6fa102A67bd5C48E5756Baa596", // omni adapter
 
                 "0x0000000022D53366457F9d5E68Ec105046FC4383", //curve
                 "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch v5
@@ -30,7 +31,7 @@ let config = new Map([
                 "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D", //univ2
                 "0xE592427A0AEce92De3Edee1F18E0157C05861564", //univ3
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", // open ocean
-                "0x3321dE36B6C29A6fa102A67bd5C48E5756Baa596", // omni adapter
+
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
         },
@@ -95,6 +96,7 @@ let config = new Map([
             executors: [
                 "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", // butter router v3.0
                 "0xaa301070448385cfAaC5913A67B16C4392944a8f", // swapAdapter
+                "0x3321dE36B6C29A6fa102A67bd5C48E5756Baa596", // omni adapter
 
                 "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch v5
                 "0x111111125421cA6dc452d289314280a0f8842A65", //1inch v6
@@ -102,8 +104,8 @@ let config = new Map([
                 "0xB971eF87ede563556b2ED4b1C0b0019111Dd85d2", //uni SwapRouter02
                 "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506", //sushi
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", // openocean
-                "0x3321dE36B6C29A6fa102A67bd5C48E5756Baa596", // omni adapter
                 "0xedf2021f41AbCfE2dEA4427E1B61f4d0AA5aA4b8", //izumi
+
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
         },
@@ -141,6 +143,7 @@ let config = new Map([
                 "0xE592427A0AEce92De3Edee1F18E0157C05861564", //univ3
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", // openocean
                 "0x032b241De86a8660f1Ae0691a4760B426EA246d7", //izumi
+
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
         },
@@ -174,6 +177,7 @@ let config = new Map([
                 "0xE592427A0AEce92De3Edee1F18E0157C05861564", //univ3
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", // openocean
                 "0x01fDea353849cA29F778B2663BcaCA1D191bED0e", //izumi
+
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
         },
@@ -205,6 +209,7 @@ let config = new Map([
                 "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch v5
                 "0x111111125421cA6dc452d289314280a0f8842A65", //1inch v6
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", // openocean
+
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
         },
@@ -268,32 +273,6 @@ let config = new Map([
                 "0x2CB45Edb4517d5947aFdE3BEAbF95A582506858B", //trisolaris
                 "0xa3a1eF5Ae6561572023363862e238aFA84C72ef5", //wanna
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", // openocean
-            ],
-        },
-    ],
-
-    [
-        "Okt",
-        {
-            wToken: "0x8F8526dbfd6E38E3D8307702cA8469Bae6C56C15",
-            plus: {
-                mos: "0x8F8526dbfd6E38E3D8307702cA8469Bae6C56C15",
-                fee: {
-                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
-                    feeRate: "7000", //denominator is 1000000
-                    fixedFee: "5000000000000000000",
-                },
-            },
-            plusV2: {
-                bridge: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
-                fee: {
-                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
-                    feeRate: "7000", //denominator is 1000000
-                },
-            },
-            executors: [
-                "0xc0006Be82337585481044a7d11941c0828FFD2D4", // openocean
-                "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE", // lifi
             ],
         },
     ],
@@ -473,11 +452,11 @@ let config = new Map([
             executors: [
                 "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", // butter router v3.0
                 "0xaa301070448385cfAaC5913A67B16C4392944a8f", // swapAdapter
+                "0x3321dE36B6C29A6fa102A67bd5C48E5756Baa596", // omni adapter
 
                 "0x0bce9e0ebd4fd4d6562495af45c4aaa0c1f7f3d7", //hiveswap v2
                 "0x3EF68D3f7664b2805D4E88381b64868a56f88bC4", //hiveswap pro
                 "0x6628a22D9E16E42225a46ceaDd93dACFefAcfE1b", //hiveswap v3
-                "0x3321dE36B6C29A6fa102A67bd5C48E5756Baa596", // omni adapter
                 "0x3EF68D3f7664b2805D4E88381b64868a56f88bC4", // izumi
             ],
         },
@@ -626,33 +605,11 @@ let config = new Map([
             executors: [
                 "TPYm4fQJxmoBuhAbNWCBx2ehzhVJ1fxFNP",
                 "TYCXm93z8oAhhdT2C2VqEFbSnBAmWzXqo1",
+
                 "TFVisXFaijZfeyeSjCEVkHfex7HGdTxzF9", // sun smart router
                 "TKzxdSv2FZKQrEqkKVgp5DcwEXBEKMg2Ax", // sun v2 route
                 "TQAvWQpT9H916GckwWDJNhYZvQMkuRL7PN", // sun v3 route
             ],
-        },
-    ],
-
-    [
-        "BEVM",
-        {
-            wToken: "0x09Ff8E49D0EA411A3422ed95E8f5497D4241F532",
-            plus: {
-                mos: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
-                fee: {
-                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
-                    feeRate: "7000", //denominator is 1000000
-                    fixedFee: "1000000000000000000000",
-                },
-            },
-            plusV2: {
-                bridge: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
-                fee: {
-                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
-                    feeRate: "7000", //denominator is 1000000
-                },
-            },
-            executors: ["0xEE030ec6F4307411607E55aCD08e628Ae6655B86", "0xaa301070448385cfAaC5913A67B16C4392944a8f"],
         },
     ],
 
@@ -678,6 +635,7 @@ let config = new Map([
             executors: [
                 "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", //butter router v3
                 "0xaa301070448385cfAaC5913A67B16C4392944a8f", //swapAdapter
+
                 "0x1aFa5D7f89743219576Ef48a9826261bE6378a68", //izumi
             ],
         },
@@ -709,7 +667,6 @@ let config = new Map([
                 "0x44889b52b71E60De6ed7dE82E2939fcc52fB2B4E", //Thruster
                 "0xA3F50FeBA40dd3E884688C0AF72C4054D07a1c50", //izumi
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", //openocean
-                "0xC626845BF4E6a5802Ef774dA0B3DfC6707F015F7", // owlto
             ],
         },
     ],
@@ -739,7 +696,6 @@ let config = new Map([
 
                 "0x2db0AFD0045F3518c77eC6591a542e326Befd3D7", //izumi
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", //openocean
-                "0x8f957ed3f969d7b6e5d6df81e61a5ff45f594dd1", // swft
             ],
         },
     ],

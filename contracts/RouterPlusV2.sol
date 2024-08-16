@@ -39,9 +39,9 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
         uint256 inputBalance;
         bytes from;
     }
-    event CollectFee(bytes32 indexed orderId, address indexed token, uint256 indexed feeAmount, bool feeBeforeSwap);
-    event SetFee(address _receiver, uint256 _feeRate);
-    event SetGasForReFund(uint256 indexed _gasForReFund);
+    event CollectFee(bytes32 transferId, bytes32 orderId, address indexed token, uint256 feeAmount, bool feeBeforeSwap);
+    event SetFee(address indexed _receiver, uint256 _feeRate);
+    event SetGasForReFund(uint256 _gasForReFund);
     event SetBridgeAddress(address indexed _bridgeAddress);
     event Approve(address indexed executor, bool indexed flag);
 
@@ -141,7 +141,7 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
 
         orderId = _doBridge(msg.sender, swapTemp.swapToken, swapTemp.swapAmount, bridge);
 
-        emit CollectFee(orderId, feeToken, feeAmount, _feeBeforeSwap);
+        emit CollectFee(swapTemp.transferId, orderId, feeToken, feeAmount, _feeBeforeSwap);
 
         emit SwapAndBridge(
             TW_REFERRER,
@@ -358,7 +358,7 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
         uint256 feeAmount;
         if (_feeBeforeSwap) {
             (feeAmount, swapOutAmount) = _collectFee(_srcToken, _amount);
-            emit CollectFee(_transferId, _srcToken, feeAmount, _feeBeforeSwap);
+            emit CollectFee(_transferId, bytes32(0x0), _srcToken, feeAmount, _feeBeforeSwap);
         }
 
         if (_swapData.length > 0) {
@@ -369,7 +369,7 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
 
         if (!_feeBeforeSwap) {
             (feeAmount, swapOutAmount) = _collectFee(dstToken, swapOutAmount);
-            emit CollectFee(_transferId, dstToken, feeAmount, _feeBeforeSwap);
+            emit CollectFee(_transferId, bytes32(0x0), dstToken, feeAmount, _feeBeforeSwap);
         }
 
         if (_callbackData.length > 0) {
