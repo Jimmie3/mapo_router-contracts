@@ -2,9 +2,7 @@ let { create, createZk, readFromFile, writeToFile } = require("../../utils/creat
 let { task } = require("hardhat/config");
 let { getConfig } = require("../../configs/config");
 let { setAuthorization } = require("../utils/util.js");
-let { deploy_contract, getTronWeb, setTronAuthorization,setTronFeeV2 } = require("../utils/tronUtil.js");
-
-
+let { deploy_contract, getTronWeb, setTronAuthorization, setTronFeeV2 } = require("../utils/tronUtil.js");
 
 module.exports = async (taskArgs, hre) => {
     const { getNamedAccounts, network } = hre;
@@ -24,13 +22,12 @@ module.exports = async (taskArgs, hre) => {
     let executors_s = config.executors.join(",");
 
     await hre.run("routerPlusV2:setAuthorization", { router: router_addr, executors: executors_s });
-    
-    await hre.run("routerPlusV2:setFee",{
-        router:router_addr,
-        receiver: config.plusV2.fee.receiver,
-        rate:config.plusV2.fee.feeRate,
-    })
 
+    await hre.run("routerPlusV2:setFee", {
+        router: router_addr,
+        receiver: config.plusV2.fee.receiver,
+        rate: config.plusV2.fee.feeRate,
+    });
 };
 
 task("routerPlusV2:deploy", "deploy router plus v2")
@@ -54,12 +51,17 @@ task("routerPlusV2:deploy", "deploy router plus v2")
             } else {
                 let salt = process.env.PLUS_V2_DEPLOY_SALT;
                 let RouterPlusV2 = await ethers.getContractFactory("RouterPlusV2");
-                let param = ethers.utils.defaultAbiCoder.encode(["address","address", "address"], [taskArgs.bridge, deployer, taskArgs.wtoken]);
+                let param = ethers.utils.defaultAbiCoder.encode(
+                    ["address", "address", "address"],
+                    [taskArgs.bridge, deployer, taskArgs.wtoken]
+                );
                 let result = await create(salt, RouterPlusV2.bytecode, param);
                 plus = result[0];
             }
             console.log("router plus address :", plus);
-            const verifyArgs = [taskArgs.bridge, deployer, taskArgs.wtoken].map((arg) => (typeof arg == "string" ? `'${arg}'` : arg)).join(" ");
+            const verifyArgs = [taskArgs.bridge, deployer, taskArgs.wtoken]
+                .map((arg) => (typeof arg == "string" ? `'${arg}'` : arg))
+                .join(" ");
             console.log(
                 `To verify, run: npx hardhat verify --network ${hre.network.name} --contract "./contracts/RouterPlusV2.sol:RouterPlusV2" ${plus} ${verifyArgs}`
             );
@@ -72,8 +74,6 @@ task("routerPlusV2:deploy", "deploy router plus v2")
         await writeToFile(deploy);
     });
 
-
-
 task("routerPlusV2:setAuthorization", "set Authorization")
     .addParam("router", "router address")
     .addParam("executors", "executors address array")
@@ -84,7 +84,7 @@ task("routerPlusV2:setAuthorization", "set Authorization")
             let tronWeb = await getTronWeb(network.name);
             let deployer = "0x" + tronWeb.defaultAddress.hex.substring(2);
             console.log("\nset authorization deployer :", deployer);
-            await setTronAuthorization(tronWeb, hre.artifacts,taskArgs.router, taskArgs.executors, taskArgs.flag);
+            await setTronAuthorization(tronWeb, hre.artifacts, taskArgs.router, taskArgs.executors, taskArgs.flag);
         } else {
             const { deployer } = await getNamedAccounts();
 
@@ -107,7 +107,7 @@ task("routerPlusV2:setFee", "set fee ")
             let deployer = "0x" + tronWeb.defaultAddress.hex.substring(2);
             console.log("\nset Fee deployer :", deployer);
             await setTronFeeV2(tronWeb, hre.artifacts, taskArgs.router, taskArgs.receiver, taskArgs.rate);
-        } else { 
+        } else {
             console.log("set fee deployer :", deployer);
             let Router = await ethers.getContractFactory("RouterPlusV2");
             let router = Router.attach(taskArgs.router);
@@ -120,7 +120,6 @@ task("routerPlusV2:setFee", "set fee ")
                 console.log("setFee failed");
             }
         }
-
     });
 
 task("routerPlusV2:setAuthFromConfig", "set Authorization from config file")

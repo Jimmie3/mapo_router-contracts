@@ -1,14 +1,13 @@
 const TronWeb = require("tronweb");
 require("dotenv").config();
 
-
 exports.setTronFeeV2 = async function (tronWeb, artifacts, router_addr, receiver, rate) {
     let Router = await artifacts.readArtifact("RouterPlusV2");
     if (router_addr.startsWith("0x")) {
         router_addr = tronWeb.address.fromHex(router_addr);
     }
     let router = await tronWeb.contract(Router.abi, router_addr);
-    receiver = tronWeb.address.toHex(receiver).replace(/^(41)/, "0x")
+    receiver = tronWeb.address.toHex(receiver).replace(/^(41)/, "0x");
     await router.setFee(receiver, rate).send();
     console.log(`Router ${router_addr} setFee  receiver(${receiver}) rate(${rate}) succeed`);
 };
@@ -86,7 +85,6 @@ exports.tronSetAuthFromConfig = async function (tronWeb, artifacts, network, rou
     console.log("RouterV2 sync authorization from config file.");
 };
 
-
 exports.deploy_contract = async function deploy_contract(artifacts, name, args, tronWeb) {
     let c = await artifacts.readArtifact(name);
     let contract_instance = await tronWeb.contract().new({
@@ -104,8 +102,6 @@ exports.deploy_contract = async function deploy_contract(artifacts, name, args, 
     return addr;
     //return "0x" + contract_instance.address.substring(2);
 };
-
-
 
 exports.getTronWeb = async function (network) {
     if (network === "Tron" || network === "TronTest") {

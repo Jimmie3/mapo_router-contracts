@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 
 interface IRouterPlus {
-
     struct BridgeParam {
         uint256 toChain;
         uint256 nativeFee;

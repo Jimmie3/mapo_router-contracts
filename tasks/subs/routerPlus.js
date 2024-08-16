@@ -142,7 +142,6 @@ task("routerPlus:setFee", "set fee ")
                 taskArgs.fixedfee
             );
         } else {
-
             await setFee(taskArgs.router, taskArgs.feereceiver, taskArgs.feerate, taskArgs.fixedfee);
         }
     });
@@ -163,7 +162,6 @@ task("routerPlus:setAuthFromConfig", "set Authorization from config file")
             let tronWeb = await getTronWeb(network.name);
             await tronSetAuthFromConfig(tronWeb, hre.artifacts, network.name, taskArgs.router, config);
         } else {
-
             let deploy_json = await readFromFile(network.name);
 
             let router_addr = taskArgs.router;
@@ -175,24 +173,24 @@ task("routerPlus:setAuthFromConfig", "set Authorization from config file")
             }
             console.log("router: ", router_addr);
 
-        let proxy_addr = deploy_json[network.name]["TransferProxy"];
-        if (proxy_addr != undefined) {
-            console.log("proxy: ", proxy_addr);
-            config.executors.push(proxy_addr);
-        }
+            let proxy_addr = deploy_json[network.name]["TransferProxy"];
+            if (proxy_addr != undefined) {
+                console.log("proxy: ", proxy_addr);
+                config.executors.push(proxy_addr);
+            }
 
             let Router = await ethers.getContractFactory("ButterRouterPlus");
             let router = Router.attach(router_addr);
 
             console.log(router.address);
 
-        let executors = [];
-        for (let i = 0; i < config.executors.length; i++) {
-            let result = await await router.approved(config.executors[i]);
-            if (result === false || result === undefined) {
-                executors.push(config.executors[i]);
+            let executors = [];
+            for (let i = 0; i < config.executors.length; i++) {
+                let result = await await router.approved(config.executors[i]);
+                if (result === false || result === undefined) {
+                    executors.push(config.executors[i]);
+                }
             }
-        }
 
             if (executors.length > 0) {
                 let executors_s = executors.join(",");
@@ -229,7 +227,7 @@ task("routerPlus:getFee", "set Authorization")
 
             let router = Router.attach(router_addr);
 
-            rst =  await router.getFee(taskArgs.amount, taskArgs.token, taskArgs.type);
+            rst = await router.getFee(taskArgs.amount, taskArgs.token, taskArgs.type);
         }
         console.log(rst);
     });

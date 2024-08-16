@@ -10,14 +10,13 @@ import "@butternetwork/bridge/contracts/interface/IButterReceiver.sol";
 import "./abstract/SwapCall.sol";
 import "./interface/IRouterPlus.sol";
 
-
 contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceiver, IRouterPlus {
     using SafeERC20 for IERC20;
     using Address for address;
 
     uint256 private constant FEE_DENOMINATOR = 1000000;
     address private constant TW_REFERRER = 0x4A53841B9b16182f996a65aAb407e7622CBCf966;
-    
+
     address public bridgeAddress;
     uint256 public gasForReFund = 80000;
     address public feeReceiver;
@@ -40,23 +39,16 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
         uint256 inputBalance;
         bytes from;
     }
-    event CollectFee(
-        bytes32 indexed orderId,
-        address indexed token,
-        uint256 indexed feeAmount,
-        bool feeBeforeSwap
-    );
-    event SetFee(address _receiver,uint256 _feeRate);
+    event CollectFee(bytes32 indexed orderId, address indexed token, uint256 indexed feeAmount, bool feeBeforeSwap);
+    event SetFee(address _receiver, uint256 _feeRate);
     event SetGasForReFund(uint256 indexed _gasForReFund);
     event SetBridgeAddress(address indexed _bridgeAddress);
     event Approve(address indexed executor, bool indexed flag);
 
-
     constructor(address _bridgeAddress, address _owner, address _wToken) payable SwapCall(_wToken) {
-        if(_owner == address(0)) revert Errors.ZERO_ADDRESS();
+        if (_owner == address(0)) revert Errors.ZERO_ADDRESS();
         _transferOwnership(_owner);
         _setBridgeAddress(_bridgeAddress);
-        
     }
 
     function setAuthorization(address[] calldata _executors, bool _flag) external onlyOwner {
@@ -86,12 +78,12 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
         _editFuncBlackList(_func, _flag);
     }
 
-    function setFee(address _receiver,uint256 _feeRate) external onlyOwner {
-        if(_receiver == address(0)) revert Errors.ZERO_ADDRESS();
-        if(_feeRate >= FEE_DENOMINATOR) revert Errors.FEE_TOO_LARGE();
+    function setFee(address _receiver, uint256 _feeRate) external onlyOwner {
+        if (_receiver == address(0)) revert Errors.ZERO_ADDRESS();
+        if (_feeRate >= FEE_DENOMINATOR) revert Errors.FEE_TOO_LARGE();
         feeReceiver = _receiver;
         feeRate = _feeRate;
-        emit SetFee(_receiver,_feeRate);
+        emit SetFee(_receiver, _feeRate);
     }
 
     function swapAndBridge(
@@ -120,7 +112,7 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
 
         uint256 feeAmount;
         address feeToken;
-        if(_feeBeforeSwap){
+        if (_feeBeforeSwap) {
             (feeAmount, swapTemp.swapAmount) = _collectFee(swapTemp.srcToken, swapTemp.srcAmount);
             feeToken = swapTemp.srcToken;
         }
@@ -138,7 +130,7 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
             receiver = abi.encodePacked(swapParam.receiver);
         }
 
-        if(!_feeBeforeSwap){
+        if (!_feeBeforeSwap) {
             (feeAmount, swapTemp.swapAmount) = _collectFee(swapTemp.swapToken, swapTemp.swapAmount);
             feeToken = swapTemp.swapToken;
         }
@@ -150,7 +142,7 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
         orderId = _doBridge(msg.sender, swapTemp.swapToken, swapTemp.swapAmount, bridge);
 
         emit CollectFee(orderId, feeToken, feeAmount, _feeBeforeSwap);
-        
+
         emit SwapAndBridge(
             TW_REFERRER,
             swapTemp.initiator,
@@ -195,7 +187,15 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
             swapTemp.swapToken,
             swapTemp.swapAmount,
             swapTemp.callAmount
-        ) = _doSwapAndCall(swapTemp.transferId, swapTemp.srcToken, swapTemp.srcAmount, swapTemp.inputBalance, _swapData, _callbackData, _feeBeforeSwap);
+        ) = _doSwapAndCall(
+            swapTemp.transferId,
+            swapTemp.srcToken,
+            swapTemp.srcAmount,
+            swapTemp.inputBalance,
+            _swapData,
+            _callbackData,
+            _feeBeforeSwap
+        );
 
         if (swapTemp.swapAmount > swapTemp.callAmount) {
             _transfer(swapTemp.swapToken, swapTemp.receiver, (swapTemp.swapAmount - swapTemp.callAmount));
@@ -305,8 +305,8 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
     ) external view override returns (address feeToken, uint256 tokenFee, uint256 afterFeeAmount) {
         feeToken = _token;
         afterFeeAmount = _amount;
-        if(feeReceiver != address(0) && feeRate != 0){
-            tokenFee = _amount * feeRate / FEE_DENOMINATOR;
+        if (feeReceiver != address(0) && feeRate != 0) {
+            tokenFee = (_amount * feeRate) / FEE_DENOMINATOR;
             afterFeeAmount = _amount - tokenFee;
         }
     }
@@ -314,10 +314,10 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
     function getInputBeforeFee(
         address _token,
         uint256 _amount
-    ) external override view returns (address feeToken, uint256 inputAmount, uint256 fee){
+    ) external view override returns (address feeToken, uint256 inputAmount, uint256 fee) {
         feeToken = _token;
         inputAmount = _amount;
-        if(feeReceiver != address(0) && feeRate != 0){
+        if (feeReceiver != address(0) && feeRate != 0) {
             inputAmount = (_amount * FEE_DENOMINATOR) / (FEE_DENOMINATOR - feeRate) + 1;
             fee = inputAmount - _amount;
         }
@@ -356,7 +356,7 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
         dstToken = _srcToken;
 
         uint256 feeAmount;
-        if(_feeBeforeSwap){
+        if (_feeBeforeSwap) {
             (feeAmount, swapOutAmount) = _collectFee(_srcToken, _amount);
             emit CollectFee(_transferId, _srcToken, feeAmount, _feeBeforeSwap);
         }
@@ -367,7 +367,7 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
             receiver = swapParam.receiver;
         }
 
-        if(!_feeBeforeSwap){
+        if (!_feeBeforeSwap) {
             (feeAmount, swapOutAmount) = _collectFee(dstToken, swapOutAmount);
             emit CollectFee(_transferId, dstToken, feeAmount, _feeBeforeSwap);
         }
@@ -404,17 +404,14 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
         );
     }
 
-    function _collectFee(
-        address _token,
-        uint256 _amount
-    ) internal returns (uint256 fee, uint256 remain) {
+    function _collectFee(address _token, uint256 _amount) internal returns (uint256 fee, uint256 remain) {
         remain = _amount;
         address _feeReceiver = feeReceiver;
         uint256 _feeRate = feeRate;
-        if(_feeReceiver != address(0) && _feeRate != 0){
-            fee = _amount * _feeRate / FEE_DENOMINATOR;
+        if (_feeReceiver != address(0) && _feeRate != 0) {
+            fee = (_amount * _feeRate) / FEE_DENOMINATOR;
             remain = _amount - fee;
-            _transfer(_token,_feeReceiver,fee);
+            _transfer(_token, _feeReceiver, fee);
         }
     }
 
