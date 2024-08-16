@@ -20,13 +20,16 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", // butter router v2.11
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
+                "0x3321dE36B6C29A6fa102A67bd5C48E5756Baa596", // omni adapter
+                "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch v5
+                "0x111111125421cA6dc452d289314280a0f8842A65", //1inch v6
                 "0x8731d54E9D02c286767d56ac03e8037C07e01e98", //stargate
                 "0x150f94B44927F078737562f0fcF3C95c01Cc2376", //stargate eth
                 "0xb1b2eeF380f21747944f46d28f683cD1FBB4d03c", //stargate eth
                 "0x3335733c454805df6a77f825f266e136FB4a3333", //rubic
                 "0x0000000022D53366457F9d5E68Ec105046FC4383", //curve
-                "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch
                 "0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F", //sushi
                 "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D", //univ2
                 "0xE592427A0AEce92De3Edee1F18E0157C05861564", //univ3
@@ -94,16 +97,20 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", // butter router v2.11
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
+                "0x3321dE36B6C29A6fa102A67bd5C48E5756Baa596", // omni adapter
                 "0x4a364f8c717cAAD9A442737Eb7b8A55cc6cf18D8", //stargate
                 "0x3335733c454805df6a77f825f266e136fb4a3333", //rubic
-                "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch
+                "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch v5
+                "0x111111125421cA6dc452d289314280a0f8842A65", //1inch v6
                 "0x10ED43C718714eb63d5aA57B78B54704E256024E", //pancake
                 "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506", //sushi
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", // openocean
                 "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE", // lifi
                 "0x7D26F09d4e2d032Efa0729fC31a4c2Db8a2394b1", //xy
                 "0xce16F69375520ab01377ce7B88f5BA8C48F8D666", //squid
+                "0xedf2021f41AbCfE2dEA4427E1B61f4d0AA5aA4b8", //izumi
             ],
         },
     ],
@@ -123,12 +130,13 @@ let config = new Map([
             plusV2: {
                 bridge: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
                 fee: {
-                    receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
+                    receiver: "0xa62A412956a8772161a27Bd11854FC9C116eE767",
                     feeRate: "7000", //denominator is 1000000
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", // butter router v2.11
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
                 "0x45A01E4e04F14f7A4a6702c74187c5F6222033cd", //stargate
                 "0x3335733c454805df6a77f825f266e136fb4a3333", //rubic
                 "0x89D6B81A1Ef25894620D05ba843d83B0A296239e", //algebra
@@ -141,6 +149,7 @@ let config = new Map([
                 "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE", // lifi
                 "0x0c988b66EdEf267D04f100A879db86cdb7B9A34F", //xy
                 "0xce16F69375520ab01377ce7B88f5BA8C48F8D666", //squid
+                "0xaaab45a0ea5d8615411877178de9fa7a54068dde", // chain pool
             ],
         },
     ],
@@ -171,9 +180,11 @@ let config = new Map([
                 "0xb1b2eeF380f21747944f46d28f683cD1FBB4d03c", //stargate eth
                 "0x3335733c454805df6a77f825f266e136FB4a3333", //rubic
                 "0x0000000022D53366457F9d5E68Ec105046FC4383", //curve
-                "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch
+                "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch v5
+                "0x111111125421cA6dc452d289314280a0f8842A65", //1inch v6
                 "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506", //sushi
                 "0xE592427A0AEce92De3Edee1F18E0157C05861564", //univ3
+                "0x01fDea353849cA29F778B2663BcaCA1D191bED0e", //izumi
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", // openocean
                 "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE", // lifi
                 "0x33383265290421C704c6b09F4BF27ce574DC4203", //xy
@@ -202,13 +213,15 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", // butter router v2.11
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
                 "0xB0D502E938ed5f4df2E681fE6E419ff29631d62b", //stargate
                 "0xB49c4e680174E331CB0A7fF3Ab58afC9738d5F8b", //stargate eth
                 "0xb1b2eeF380f21747944f46d28f683cD1FBB4d03c", //stargate eth
                 "0x3335733c454805df6a77f825f266e136FB4a3333", //rubic
                 "0x0000000022D53366457F9d5E68Ec105046FC4383", //curve
-                "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch
+                "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch v5
+                "0x111111125421cA6dc452d289314280a0f8842A65", //1inch v6
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", // openocean
                 "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE", // lifi
                 "0x7a6e01880693093abACcF442fcbED9E0435f1030", //xy
@@ -230,20 +243,24 @@ let config = new Map([
                 },
             },
             plusV2: {
-                bridge: "0xfeB2b97e4Efce787c08086dC16Ab69E063911380",
+                bridge: "0xBEf06a32166C4B819fF04cCfa887733B8bb67eB5",
                 fee: {
                     receiver: "0x4A53841B9b16182f996a65aAb407e7622CBCf966",
                     feeRate: "7000", //denominator is 1000000
                 },
             },
             executors: [
-                "0x903098e9f0EC736766b587e3525f70E3447e1Ae8", // butter router v2.11
+                "0x58A64D2bF0032ac05216DDC9cadD0F9DB828BBF5", 
+                "0xaC74fE3b317023fA1BB2bEAB1771406Bf6f15861",
                 "0x8E70e517057e7380587Ea6990dAe81cB1Ba405ce", //rubic
                 "0x8B791913eB07C32779a16750e3868aA8495F5964", //mute
-                "0x6e2B76966cbD9cF4cC2Fa0D76d24d5241E0ABC2F", //1inch
+                "0x6e2B76966cbD9cF4cC2Fa0D76d24d5241E0ABC2F", //1inch v5
+                "0x6fd4383cB451173D5f9304F041C7BCBf27d561fF", //1inch v6
                 "0x2da10A1e27bF85cEdD8FFb1AbBe97e53391C0295", //sync-swap
                 "0x8E70e517057e7380587Ea6990dAe81cB1Ba405ce",
                 "0xe4e156167cc9C7AC4AbD8d39d203a5495F775547", //xy
+                "0x943ac2310D9BC703d6AB5e5e76876e212100f894", //izumi
+                "0x36A1aCbbCAfca2468b85011DDD16E7Cb4d673230", //openocean
             ],
         },
     ],
@@ -555,10 +572,15 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
-                "0xEf71750C100f7918d6Ded239Ff1CF09E81dEA92D", //claimswap
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", // butter router v2.11
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
                 "0x52075Fd1fF67f03beABCb5AcdA9679b02d98cA37", //xy
                 "0xe0fbB27D0E7F3a397A67a9d4864D4f4DD7cF8cB9", // klayswap
+                "0xEf71750C100f7918d6Ded239Ff1CF09E81dEA92D", //claimswap
+                "0xe0fbB27D0E7F3a397A67a9d4864D4f4DD7cF8cB9", // klayswap
+                "0x3EF68D3f7664b2805D4E88381b64868a56f88bC4", // izumi
+                "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch v5
+                "0x111111125421cA6dc452d289314280a0f8842A65", //1inch v6
             ],
         },
     ],
@@ -797,8 +819,13 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
-                "0x0bce9e0ebd4fd4d6562495af45c4aaa0c1f7f3d7", //hiveswap
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86",
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
+                "0x0bce9e0ebd4fd4d6562495af45c4aaa0c1f7f3d7", //hiveswap v2
+                "0x3EF68D3f7664b2805D4E88381b64868a56f88bC4", //hiveswap pro
+                "0x6628a22D9E16E42225a46ceaDd93dACFefAcfE1b", //hiveswap v3
+                "0x3321dE36B6C29A6fa102A67bd5C48E5756Baa596", // omni adapter
+                "0x3EF68D3f7664b2805D4E88381b64868a56f88bC4", // izumi
             ],
         },
     ],
@@ -874,9 +901,12 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", // 
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
                 "0x73Ce60416035B8D7019f6399778c14ccf5C9c7A1", //xy router
                 "0xce16F69375520ab01377ce7B88f5BA8C48F8D666", //SQUID
+                "0x032b241De86a8660f1Ae0691a4760B426EA246d7", //izumi
+                "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", //openocean
             ],
         },
     ],
@@ -901,7 +931,14 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86",
+                "0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43", //Aerodrome Router
+                "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD", // UniSwap UniversalRouter
+                "0x02F55D53DcE23B4AA962CC68b0f685f26143Bdb2", // izumi
+                "0x6352a56caadc4f1e25cd6c75970fa768a3304e64", // openocean
+                "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch v5
+                "0x111111125421cA6dc452d289314280a0f8842A65", //1inch v6
                 "0xce16F69375520ab01377ce7B88f5BA8C48F8D666", //SQUID
             ],
         },
@@ -1027,7 +1064,9 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86",
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
+                "0x62b0873055bf896dd869e172119871ac24aea305", // butter router v2.11
             ],
         },
     ],
@@ -1052,7 +1091,12 @@ let config = new Map([
                 },
             },
             executors: [
-                "TSBDbe1TB8Ft3KZTdbDcZPLFTkL2BFBiZh", // butter router v2.11
+                "TPYm4fQJxmoBuhAbNWCBx2ehzhVJ1fxFNP",
+                "TYCXm93z8oAhhdT2C2VqEFbSnBAmWzXqo1",
+                "TYMpgB8Q9vSoGtkyE3hXsvUrpte3KCDGj6",
+                "TFVisXFaijZfeyeSjCEVkHfex7HGdTxzF9", // sun smart router
+                "TKzxdSv2FZKQrEqkKVgp5DcwEXBEKMg2Ax", // sun v2 route
+                "TQAvWQpT9H916GckwWDJNhYZvQMkuRL7PN", // sun v3 route
             ],
         },
     ],
@@ -1077,7 +1121,8 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", 
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f"
             ],
         },
     ],
@@ -1102,7 +1147,9 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86",
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
+                "0x1aFa5D7f89743219576Ef48a9826261bE6378a68", //izumi
             ],
         },
     ],
@@ -1127,7 +1174,11 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86",
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
+                "0x44889b52b71E60De6ed7dE82E2939fcc52fB2B4E", //Thruster
+                "0xA3F50FeBA40dd3E884688C0AF72C4054D07a1c50", //izumi
+                "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", //openocean
             ],
         },
     ],
@@ -1152,7 +1203,10 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", 
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
+                "0x2db0AFD0045F3518c77eC6591a542e326Befd3D7", //izumi
+                "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", //openocean
             ],
         },
     ],
@@ -1177,7 +1231,10 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", 
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
+                "0x25C030116Feb2E7BbA054b9de0915E5F51b03e31", //izumi
+                "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", //openocean
             ],
         },
     ],
@@ -1202,7 +1259,8 @@ let config = new Map([
                 },
             },
             executors: [
-                "0xbB21e441fb738F54e6eC244e435475096E179d66", // butter router v2.11
+                "0xEE030ec6F4307411607E55aCD08e628Ae6655B86", 
+                "0xaa301070448385cfAaC5913A67B16C4392944a8f",
             ],
         },
     ],

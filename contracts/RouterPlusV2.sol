@@ -16,6 +16,7 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
     using Address for address;
 
     uint256 private constant FEE_DENOMINATOR = 1000000;
+    address private constant TW_REFERRER = 0x4A53841B9b16182f996a65aAb407e7622CBCf966;
     
     address public bridgeAddress;
     uint256 public gasForReFund = 80000;
@@ -142,15 +143,16 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
             feeToken = swapTemp.swapToken;
         }
 
-        emit CollectFee(orderId, feeToken, feeAmount, _feeBeforeSwap);
-
         BridgeParam memory bridge = abi.decode(_bridgeData, (BridgeParam));
         swapTemp.toChain = bridge.toChain;
         receiver = bridge.receiver;
+
         orderId = _doBridge(msg.sender, swapTemp.swapToken, swapTemp.swapAmount, bridge);
+
+        emit CollectFee(orderId, feeToken, feeAmount, _feeBeforeSwap);
         
         emit SwapAndBridge(
-            address(0),
+            TW_REFERRER,
             swapTemp.initiator,
             msg.sender,
             swapTemp.transferId,
@@ -193,14 +195,14 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
             swapTemp.swapToken,
             swapTemp.swapAmount,
             swapTemp.callAmount
-        ) = _doSwapAndCall(swapTemp.transferId, swapTemp.srcToken, swapTemp.swapAmount, swapTemp.inputBalance, _swapData, _callbackData, _feeBeforeSwap);
+        ) = _doSwapAndCall(swapTemp.transferId, swapTemp.srcToken, swapTemp.srcAmount, swapTemp.inputBalance, _swapData, _callbackData, _feeBeforeSwap);
 
         if (swapTemp.swapAmount > swapTemp.callAmount) {
             _transfer(swapTemp.swapToken, swapTemp.receiver, (swapTemp.swapAmount - swapTemp.callAmount));
         }
 
         emit SwapAndCall(
-            address(0),
+            TW_REFERRER,
             swapTemp.initiator,
             msg.sender,
             swapTemp.transferId,
@@ -361,7 +363,7 @@ contract RouterPlusV2 is SwapCall, ReentrancyGuard, Ownable2Step, IButterReceive
 
         if (_swapData.length > 0) {
             SwapParam memory swapParam = abi.decode(_swapData, (SwapParam));
-            (dstToken, swapOutAmount) = _swap(_srcToken, _amount, _initBalance, swapParam);
+            (dstToken, swapOutAmount) = _swap(_srcToken, swapOutAmount, _initBalance, swapParam);
             receiver = swapParam.receiver;
         }
 
