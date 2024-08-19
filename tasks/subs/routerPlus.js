@@ -2,7 +2,7 @@ let { create, createZk, readFromFile, writeToFile } = require("../../utils/creat
 let { task } = require("hardhat/config");
 let { getConfig } = require("../../configs/config");
 let { setAuthorization, setFee } = require("../utils/util.js");
-let { deploy_contract, getTronWeb, setTronAuthorization, tronSetFee } = require("../utils/tronUtil.js");
+let { deploy_contract, getTronWeb, setTronAuthorization, tronSetFee, tronSetAuthFromConfig } = require("../utils/tronUtil.js");
 module.exports = async (taskArgs, hre) => {
     const { getNamedAccounts, network } = hre;
     const { deployer } = await getNamedAccounts();
@@ -152,38 +152,31 @@ task("routerPlus:setAuthFromConfig", "set Authorization from config file")
         const { getNamedAccounts } = hre;
         const { deployer } = await getNamedAccounts();
         console.log("set Authorization from config file deployer :", deployer);
-
         let config = getConfig(network.name);
         if (!config) {
             throw "config not set";
         }
+        let router_addr = taskArgs.router;
+        if (router_addr === "router") {
+            if (deploy_json[network.name]["RouterPlus"] === undefined) {
+                throw "can not get router address";
+            }
+            router_addr = deploy_json[network.name]["RouterPlus"]["addr"];
+        }
+        console.log("router: ", router_addr);
 
         if (network.name === "Tron" || network.name === "TronTest") {
             let tronWeb = await getTronWeb(network.name);
-            await tronSetAuthFromConfig(tronWeb, hre.artifacts, network.name, taskArgs.router, config);
+            await tronSetAuthFromConfig(tronWeb, hre.artifacts, taskArgs.router, config);
         } else {
             let deploy_json = await readFromFile(network.name);
-
-            let router_addr = taskArgs.router;
-            if (router_addr === "router") {
-                if (deploy_json[network.name]["RouterPlus"] === undefined) {
-                    throw "can not get router address";
-                }
-                router_addr = deploy_json[network.name]["RouterPlus"]["addr"];
-            }
-            console.log("router: ", router_addr);
-
             let proxy_addr = deploy_json[network.name]["TransferProxy"];
             if (proxy_addr != undefined) {
                 console.log("proxy: ", proxy_addr);
                 config.executors.push(proxy_addr);
             }
-
             let Router = await ethers.getContractFactory("ButterRouterPlus");
             let router = Router.attach(router_addr);
-
-            console.log(router.address);
-
             let executors = [];
             for (let i = 0; i < config.executors.length; i++) {
                 let result = await await router.approved(config.executors[i]);
@@ -191,7 +184,6 @@ task("routerPlus:setAuthFromConfig", "set Authorization from config file")
                     executors.push(config.executors[i]);
                 }
             }
-
             if (executors.length > 0) {
                 let executors_s = executors.join(",");
                 console.log("routers to set :", executors_s);

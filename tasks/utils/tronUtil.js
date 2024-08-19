@@ -13,22 +13,7 @@ exports.setTronFeeV2 = async function (tronWeb, artifacts, router_addr, receiver
 };
 
 exports.setTronAuthorization = async function (tronWeb, artifacts, router_addr, executors, flag) {
-    let Router = await artifacts.readArtifact("ButterRouterPlus");
-    if (router_addr.startsWith("0x")) {
-        router_addr = tronWeb.address.fromHex(router_addr);
-    }
-    let router = await tronWeb.contract(Router.abi, router_addr);
-    let executorList = executors.split(",");
-    if (executorList.length < 1) {
-        console.log("executors is empty ...");
-        return;
-    }
-    let executorsHex = [];
-    for (let i = 0; i < executorList.length; i++) {
-        executorsHex.push(tronWeb.address.toHex(executorList[i]).replace(/^(41)/, "0x"));
-    }
-    await router.setAuthorization(executorsHex, flag).send();
-    console.log(`Router ${router_addr} setAuthorization ${executorList} succeed`);
+    await setAuthorization(tronWeb, artifacts, network, router_addr, executors_s, true);
 };
 
 exports.tronSetFee = async function (tronWeb, artifacts, router_addr, feereceiver, feerate, fixedfee) {
@@ -45,34 +30,18 @@ exports.tronSetFee = async function (tronWeb, artifacts, router_addr, feereceive
     console.log(`Router ${router_addr} setFee rate(${feerate}), fixed(${fixedfee}), receiver(${feereceiver}) succeed`);
 };
 
-exports.tronSetAuthFromConfig = async function (tronWeb, artifacts, network, router_addr, config) {
-    let deploy_json = await readFromFile(network);
-    if (router_addr === "router") {
-        if (deploy_json[network]["ButterRouterV2"] === undefined) {
-            throw "can not get router address";
-        }
-        router_addr = deploy_json[network]["ButterRouterV2"]["addr"];
-    }
-    console.log("router: ", router_addr);
-
-    let adapter_address = deploy_json[network]["SwapAdapter"];
-    if (adapter_address != undefined) {
-        console.log("SwapAdapter: ", adapter_address);
-        config.v2.executors.push(adapter_address);
-    }
-    // let tronWeb = await getTronWeb(network);
-    let Router = await artifacts.readArtifact("ButterRouterV2");
+exports.tronSetAuthFromConfig = async function (tronWeb, artifacts, router_addr, config) {
+    let Router = await artifacts.readArtifact("ButterRouterPlus");
     if (router_addr.startsWith("0x")) {
         router_addr = tronWeb.address.fromHex(router_addr);
     }
     let router = await tronWeb.contract(Router.abi, router_addr);
     let executors = [];
-    for (let i = 0; i < config.v2.executors.length; i++) {
-        let result = await router.approved(config.v2.executors[i]).call();
+    for (let i = 0; i < config.executors.length; i++) {
+        let result = await router.approved(config.executors[i]).call();
         console.log(result);
-
         if (result === false || result === undefined) {
-            executors.push(config.v2.executors[i]);
+            executors.push(config.executors[i]);
         }
     }
     if (executors.length > 0) {
@@ -80,10 +49,52 @@ exports.tronSetAuthFromConfig = async function (tronWeb, artifacts, network, rou
 
         console.log("routers to set :", executors_s);
 
-        await setAuthorization(tronWeb, artifacts, network, router_addr, executors_s, true);
+        await setAuthorization(tronWeb, artifacts, router_addr, executors_s, true);
     }
     console.log("RouterV2 sync authorization from config file.");
 };
+
+exports.tronRemoveAuthFromConfig = async function (tronWeb, artifacts, router_addr, config) {
+    let Router = await artifacts.readArtifact("ButterRouterPlus");
+    if (router_addr.startsWith("0x")) {
+        router_addr = tronWeb.address.fromHex(router_addr);
+    }
+    let router = await tronWeb.contract(Router.abi, router_addr);
+    let removes = [];
+    for (let i = 0; i < config.removes.length; i++) {
+        let result = await router.approved(config.removes[i]).call();
+        console.log(result);
+        if (result === true) {
+            removes.push(config.removes[i]);
+        }
+    }
+    if (executors.length > 0) {
+        let removes_s = removes.join(",");
+        console.log("routers to remove :", removes_s);
+        await setAuthorization(tronWeb, artifacts, router_addr, removes_s, false);
+    }
+    console.log("RouterPlusV2 remove authorization from config file.");
+};
+
+
+async function setAuthorization(tronWeb, artifacts, router_addr, executors, flag) {
+    let Router = await artifacts.readArtifact("ButterRouterPlus");
+    if (router_addr.startsWith("0x")) {
+        router_addr = tronWeb.address.fromHex(router_addr);
+    }
+    let router = await tronWeb.contract(Router.abi, router_addr);
+    let executorList = executors.split(",");
+    if (executorList.length < 1) {
+        console.log("executors is empty ...");
+        return;
+    }
+    let executorsHex = [];
+    for (let i = 0; i < executorList.length; i++) {
+        executorsHex.push(tronWeb.address.toHex(executorList[i]).replace(/^(41)/, "0x"));
+    }
+    await router.setAuthorization(executorsHex, flag).send();
+    console.log(`Router ${router_addr} setAuthorization ${executorList} succeed`);
+}
 
 exports.deploy_contract = async function deploy_contract(artifacts, name, args, tronWeb) {
     let c = await artifacts.readArtifact(name);
