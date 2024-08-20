@@ -35,13 +35,16 @@ task("routerPlusV2:deploy", "deploy router plus v2")
     .addParam("bridge", "bridge address")
     .setAction(async (taskArgs, hre) => {
         const { getNamedAccounts, ethers, network } = hre;
+        const { deploy } = hre.deployments;
 
         let plus;
         if (network.name === "Tron" || network.name === "TronTest") {
             let tronWeb = await getTronWeb(network.name);
             let deployer = "0x" + tronWeb.defaultAddress.hex.substring(2);
+            let wToken = tronWeb.address.toHex(taskArgs.wtoken).replace(/^(41)/, "0x");
             console.log("deployer :", tronWeb.address.fromHex(deployer));
-            plus = await deploy_contract(hre.artifacts, "RouterPlusV2", [taskArgs.bridge, deployer, taskArgs.wToken]);
+            console.log(`deployer: ${deployer}, wtoken: ${wToken}`)
+            plus = await deploy_contract(hre.artifacts, "RouterPlusV2", [taskArgs.bridge, deployer, wToken], tronWeb);
         } else {
             const { deployer } = await getNamedAccounts();
             console.log("\ndeploy butter router plus deployer :", deployer);
@@ -50,13 +53,24 @@ task("routerPlusV2:deploy", "deploy router plus v2")
                 plus = await createZk("RouterPlusV2", [taskArgs.bridge, deployer, taskArgs.wtoken], hre);
             } else {
                 let salt = process.env.PLUS_V2_DEPLOY_SALT;
-                let RouterPlusV2 = await ethers.getContractFactory("RouterPlusV2");
-                let param = ethers.utils.defaultAbiCoder.encode(
-                    ["address", "address", "address"],
-                    [taskArgs.bridge, deployer, taskArgs.wtoken]
-                );
-                let result = await create(salt, RouterPlusV2.bytecode, param);
-                plus = result[0];
+                if (salt === "") {
+                    let impl = await deploy("RouterPlusV2", {
+                        from: deployer,
+                        args: [taskArgs.bridge, deployer, taskArgs.wtoken],
+                        log: true,
+                        contract: "RouterPlusV2",
+                        gasLimit: 5500000
+                    });
+                    plus = impl.address;
+                } else {
+                    let RouterPlusV2 = await ethers.getContractFactory("RouterPlusV2");
+                    let param = ethers.utils.defaultAbiCoder.encode(
+                        ["address", "address", "address"],
+                        [taskArgs.bridge, deployer, taskArgs.wtoken]
+                    );
+                    let result = await create(salt, RouterPlusV2.bytecode, param);
+                    plus = result[0];
+                }
             }
             console.log("router plus address :", plus);
             const verifyArgs = [taskArgs.bridge, deployer, taskArgs.wtoken]
@@ -66,12 +80,12 @@ task("routerPlusV2:deploy", "deploy router plus v2")
                 `To verify, run: npx hardhat verify --network ${hre.network.name} --contract "./contracts/RouterPlusV2.sol:RouterPlusV2" ${plus} ${verifyArgs}`
             );
         }
-        let deploy = await readFromFile(network.name);
-        if (!deploy[network.name]["RouterPlusV2"]) {
-            deploy[network.name]["RouterPlusV2"] = {};
+        let deployments = await readFromFile(network.name);
+        if (!deployments[network.name]["RouterPlusV2"]) {
+            deployments[network.name]["RouterPlusV2"] = {};
         }
-        deploy[network.name]["RouterPlusV2"]["addr"] = plus;
-        await writeToFile(deploy);
+        deployments[network.name]["RouterPlusV2"]["addr"] = plus;
+        await writeToFile(deployments);
     });
 
 task("routerPlusV2:setAuthorization", "set Authorization")
