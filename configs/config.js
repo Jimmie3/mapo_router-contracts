@@ -34,6 +34,7 @@ let config = new Map([
 
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
+            removes: []
         },
     ],
 
@@ -71,6 +72,7 @@ let config = new Map([
                 "0x8f957ed3f969d7b6e5d6df81e61a5ff45f594dd1", // swft
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
+            removes: []
         },
     ],
 
@@ -108,6 +110,7 @@ let config = new Map([
 
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
+            removes: []
         },
     ],
 
@@ -146,6 +149,7 @@ let config = new Map([
 
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
+            removes: []
         },
     ],
 
@@ -180,6 +184,7 @@ let config = new Map([
 
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
+            removes: []
         },
     ],
 
@@ -212,6 +217,7 @@ let config = new Map([
 
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
+            removes: []
         },
     ],
 
@@ -244,6 +250,7 @@ let config = new Map([
                 "0x943ac2310D9BC703d6AB5e5e76876e212100f894", //izumi
                 "0x36A1aCbbCAfca2468b85011DDD16E7Cb4d673230", //openocean
             ],
+            removes: []
         },
     ],
 
@@ -274,6 +281,7 @@ let config = new Map([
                 "0xa3a1eF5Ae6561572023363862e238aFA84C72ef5", //wanna
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", // openocean
             ],
+            removes: []
         },
     ],
 
@@ -300,6 +308,7 @@ let config = new Map([
                 "0x17C83E2B96ACfb5190d63F5E46d93c107eC0b514", //oolong
                 "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE", // Li.Fi
             ],
+            removes: []
         },
     ],
 
@@ -327,6 +336,7 @@ let config = new Map([
                 "0xce16F69375520ab01377ce7B88f5BA8C48F8D666", //SQUID
                 "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE", // lifi
             ],
+            removes: []
         },
     ],
 
@@ -365,6 +375,7 @@ let config = new Map([
                 "0xce16F69375520ab01377ce7B88f5BA8C48F8D666", //squid
                 "0x8f957ed3f969d7b6e5d6df81e61a5ff45f594dd1", // swft
             ],
+            removes: []
         },
     ],
 
@@ -394,6 +405,7 @@ let config = new Map([
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", // openocean
                 "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE", // lifi
             ],
+            removes: []
         },
     ],
 
@@ -427,6 +439,7 @@ let config = new Map([
                 "0x1111111254eeb25477b68fb85ed929f73a960582", //1inch v5
                 "0x111111125421cA6dc452d289314280a0f8842A65", //1inch v6
             ],
+            removes: []
         },
     ],
 
@@ -459,6 +472,7 @@ let config = new Map([
                 "0x6628a22D9E16E42225a46ceaDd93dACFefAcfE1b", //hiveswap v3
                 "0x3EF68D3f7664b2805D4E88381b64868a56f88bC4", // izumi
             ],
+            removes: []
         },
     ],
 
@@ -488,6 +502,7 @@ let config = new Map([
                 "0xC626845BF4E6a5802Ef774dA0B3DfC6707F015F7", // owlto
                 "0x8f957ed3f969d7b6e5d6df81e61a5ff45f594dd1", // swft
             ],
+            removes: []
         },
     ],
 
@@ -518,6 +533,7 @@ let config = new Map([
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", //openocean
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
+            removes: []
         },
     ],
 
@@ -552,6 +568,7 @@ let config = new Map([
                 "0x111111125421cA6dc452d289314280a0f8842A65", //1inch v6
                 "0xeF4fB24aD0916217251F553c0596F8Edc630EB66", // DLN
             ],
+            removes: []
         },
     ],
 
@@ -580,6 +597,7 @@ let config = new Map([
 
                 "0x62b0873055bf896dd869e172119871ac24aea305", // Swappi
             ],
+            removes: []
         },
     ],
 
@@ -610,6 +628,7 @@ let config = new Map([
                 "TKzxdSv2FZKQrEqkKVgp5DcwEXBEKMg2Ax", // sun v2 route
                 "TQAvWQpT9H916GckwWDJNhYZvQMkuRL7PN", // sun v3 route
             ],
+            removes: []
         },
     ],
 
@@ -638,6 +657,7 @@ let config = new Map([
 
                 "0x1aFa5D7f89743219576Ef48a9826261bE6378a68", //izumi
             ],
+            removes: []
         },
     ],
 
@@ -668,6 +688,7 @@ let config = new Map([
                 "0xA3F50FeBA40dd3E884688C0AF72C4054D07a1c50", //izumi
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", //openocean
             ],
+            removes: []
         },
     ],
 
@@ -697,6 +718,7 @@ let config = new Map([
                 "0x2db0AFD0045F3518c77eC6591a542e326Befd3D7", //izumi
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", //openocean
             ],
+            removes: []
         },
     ],
 
@@ -726,6 +748,7 @@ let config = new Map([
                 "0x25C030116Feb2E7BbA054b9de0915E5F51b03e31", //izumi
                 "0x6352a56caadC4F1E25CD6c75970Fa768A3304e64", //openocean
             ],
+            removes: []
         },
     ],
 
@@ -749,6 +772,7 @@ let config = new Map([
                 },
             },
             executors: ["0xEE030ec6F4307411607E55aCD08e628Ae6655B86", "0xaa301070448385cfAaC5913A67B16C4392944a8f"],
+            removes: []
         },
     ],
 

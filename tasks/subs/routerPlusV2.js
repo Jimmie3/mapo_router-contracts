@@ -2,7 +2,13 @@ let { create, createZk, readFromFile, writeToFile } = require("../../utils/creat
 let { task } = require("hardhat/config");
 let { getConfig } = require("../../configs/config");
 let { setAuthorization } = require("../utils/util.js");
-let { deploy_contract, getTronWeb, setTronAuthorization, setTronFeeV2 } = require("../utils/tronUtil.js");
+let { 
+    deploy_contract, 
+    getTronWeb,
+    tronSetAuthFromConfig, 
+    setTronFeeV2,
+    tronRemoveAuthFromConfig
+ } = require("../utils/tronUtil.js");
 
 module.exports = async (taskArgs, hre) => {
     const { getNamedAccounts, network } = hre;
@@ -113,7 +119,7 @@ task("routerPlusV2:setFee", "set fee ")
     .addParam("receiver", "feeReceiver address")
     .addParam("rate", "fee rate")
     .setAction(async (taskArgs, hre) => {
-        const { getNamedAccounts, ethers } = hre;
+        const { getNamedAccounts, ethers, network } = hre;
         const { deployer } = await getNamedAccounts();
 
         if (network.name === "Tron" || network.name === "TronTest") {
@@ -139,7 +145,7 @@ task("routerPlusV2:setFee", "set fee ")
 task("routerPlusV2:setAuthFromConfig", "set Authorization from config file")
     .addOptionalParam("router", "router address", "router", types.string)
     .setAction(async (taskArgs, hre) => {
-        const { getNamedAccounts } = hre;
+        const { getNamedAccounts, network } = hre;
         const { deployer } = await getNamedAccounts();
         console.log("set Authorization from config file deployer :", deployer);
 
@@ -149,7 +155,6 @@ task("routerPlusV2:setAuthFromConfig", "set Authorization from config file")
         }
 
         let deploy_json = await readFromFile(network.name);
-
         let router_addr = taskArgs.router;
         if (router_addr === "router") {
             if (deploy_json[network.name]["RouterPlusV2"] === undefined) {
@@ -158,26 +163,70 @@ task("routerPlusV2:setAuthFromConfig", "set Authorization from config file")
             router_addr = deploy_json[network.name]["RouterPlusV2"]["addr"];
         }
         console.log("router: ", router_addr);
-
-        let Router = await ethers.getContractFactory("RouterPlusV2");
-        let router = Router.attach(router_addr);
-
-        console.log(router.address);
-
-        let executors = [];
-        for (let i = 0; i < config.executors.length; i++) {
-            let result = await await router.approved(config.executors[i]);
-            if (result === false || result === undefined) {
-                executors.push(config.executors[i]);
+        if (network.name === "Tron" || network.name === "TronTest") {
+            let tronWeb = await getTronWeb(network.name);
+            let deployer = "0x" + tronWeb.defaultAddress.hex.substring(2);
+            console.log("\nsetAuthFromConfig deployer :", deployer);
+            await tronSetAuthFromConfig(tronWeb, hre.artifacts, router_addr, config);
+        } else {
+            let Router = await ethers.getContractFactory("RouterPlusV2");
+            let router = Router.attach(router_addr);
+            let executors = [];
+            for (let i = 0; i < config.executors.length; i++) {
+                let result = await await router.approved(config.executors[i]);
+                if (result === false || result === undefined) {
+                    executors.push(config.executors[i]);
+                }
+            }
+            if (executors.length > 0) {
+                let executors_s = executors.join(",");
+                console.log("routers to set :", executors_s);
+                await setAuthorization(router_addr, executors_s, true);
             }
         }
-
-        if (executors.length > 0) {
-            let executors_s = executors.join(",");
-            console.log("routers to set :", executors_s);
-
-            await setAuthorization(router_addr, executors_s, true);
-        }
-
         console.log("RouterPlusV2 sync authorization from config file.");
+    });
+
+
+task("routerPlusV2:removeAuthFromConfig", "set Authorization from config file")
+    .addOptionalParam("router", "router address", "router", types.string)
+    .setAction(async (taskArgs, hre) => {
+        const { getNamedAccounts, network } = hre;
+        const { deployer } = await getNamedAccounts();
+        console.log("set Authorization from config file deployer :", deployer);
+        let config = getConfig(network.name);
+        if (!config) {
+            throw "config not set";
+        }
+        let deploy_json = await readFromFile(network.name);
+        let router_addr = taskArgs.router;
+        console.log("router: ", router_addr);
+        if (router_addr === "router") {
+            if (deploy_json[network.name]["RouterPlusV2"] === undefined) {
+                throw "can not get router address";
+            }
+            router_addr = deploy_json[network.name]["RouterPlusV2"]["addr"];
+        }
+        if (network.name === "Tron" || network.name === "TronTest") { 
+            let tronWeb = await getTronWeb(network.name);
+            let deployer = "0x" + tronWeb.defaultAddress.hex.substring(2);
+            console.log("\nremoveAuthFromConfig deployer :", deployer);
+            await tronRemoveAuthFromConfig(tronWeb, hre.artifacts, router_addr, config);
+        } else {
+            let Router = await ethers.getContractFactory("RouterPlusV2");
+            let router = Router.attach(router_addr);
+            let removes = [];
+            for (let i = 0; i < config.removes.length; i++) {
+                let result = await await router.approved(config.removes[i]);
+                if (result === true) {
+                    removes.push(config.removes[i]);
+                }
+            }
+            if (removes.length > 0) {
+                let removes_s = removes.join(",");
+                console.log("routers to remove :", removes_s);
+                await setAuthorization(router_addr, removes_s, false);
+            }
+        }
+        console.log("RouterPlusV2 remove authorization from config file.");
     });
